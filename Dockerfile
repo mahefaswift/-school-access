@@ -1,16 +1,10 @@
-FROM php:8.2-apache
+FROM php:8.2-cli
 
-# Installer les extensions PHP nécessaires
+# Installer mysqli et PDO
 RUN docker-php-ext-install mysqli pdo pdo_mysql
 
-# Activer mod_rewrite Apache
-RUN a2enmod rewrite
+WORKDIR /app
+COPY . /app/
 
-# Copier les fichiers du projet
-COPY . /var/www/html/
-
-# Permissions
-RUN chown -R www-data:www-data /var/www/html
-
-# Exposer le port
-EXPOSE 80
+# Railway injecte $PORT dynamiquement
+CMD ["sh", "-c", "php -S 0.0.0.0:${PORT:-8080}"]
