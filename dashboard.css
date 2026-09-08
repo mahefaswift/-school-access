@@ -1,0 +1,168 @@
+/* =========================================
+   1. LES COULEURS DE BASE (Cartes et Pastilles)
+   ========================================= */
+
+/* Carte des personnes à l'intérieur (Bleu) */
+.carte-entree {
+    background-color: rgb(3, 3, 82) !important; /* Bleu vif */
+    color: white !important;
+    /* On applique l'animation de pulsation qui durera 2 secondes et se répétera à l'infini */
+    animation: pulse-bleu 2s infinite ease-in-out;
+}
+
+/* Carte des véhicules sortis (Rouge) */
+.carte-sortie {
+    background-color: green !important; /* Rouge vif */
+    color: white !important;
+    /* Pareil, mais avec l'animation rouge */
+    animation: pulse-rouge 2s infinite ease-in-out;
+}
+
+/* Les petites pastilles ENTRÉE dans le tableau */
+.pastille-entree {
+    background-color: rgb(3, 3, 82) !important;
+    color: white;
+    padding: 5px 12px;
+    border-radius: 8px; /* Bords bien arrondis */
+    font-size: 0.85em; /* Texte un peu plus petit */
+    font-weight: bold;
+    display: inline-block; /* Nécessaire pour que le padding fonctionne bien */
+    box-shadow: 0 0 8px rgb(3, 3, 82); /* Petit halo statique constant */
+}
+
+/* Les petites pastilles SORTIE dans le tableau */
+.pastille-sortie {
+    background-color: green !important;
+    color: white;
+    padding: 5px 12px;
+    border-radius: 8px;
+    font-size: 0.85em;
+    font-weight: bold;
+    display: inline-block;
+    box-shadow: 0 0 8px green;
+}
+
+/* =========================================
+   2. LES ANIMATIONS (Les Halos)
+   ========================================= */
+
+/* Définition de l'animation du halo bleu */
+@keyframes pulse-bleu {
+    0% {
+        box-shadow: 0 0 0px 0px rgb(3, 3, 82, 0.4);
+    }
+    50% {
+        box-shadow: 0 0 20px 8px rgb(3, 3, 82, 0.6); /* Le halo grandit et s'illumine */
+    }
+    100% {
+        box-shadow: 0 0 0px 0px rgb(3, 3, 82, 0.4);
+    }
+}
+
+/* Définition de l'animation du halo rouge */
+@keyframes pulse-rouge {
+    0% {
+        box-shadow: 0 0 0px 0px rgba(0, 128, 0, 0.4);
+    }
+    50% {
+        box-shadow: 0 0 20px 8px rgba(0, 128, 0, 0.6); /* Le halo grandit et s'illumine */
+    }
+    100% {
+        box-shadow: 0 0 0px 0px rgba(0, 128, 0, 0.4);
+    }
+}
+
+/* =========================================
+   3. LE PETIT PLUS : Effet au survol du tableau
+   ========================================= */
+
+/* Quand la souris passe sur une ligne de l'historique */
+.table-hover tbody tr:hover {
+    transform: none !important;/* Fait très légèrement grossir la ligne entière */
+    /* On garde une transition fluide uniquement sur les ombres et couleurs */
+    transition: box-shadow 0.2s ease, background-color 0.2s ease; 
+
+    /* On ajoute une ombre plus douce et nette sous la ligne */
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1) !important;
+
+    /* On marque clairement la ligne sélectionnée avec un gris très léger */
+    background-color: #f8f9fa !important;
+
+    /* On garde le curseur de la petite main */
+    cursor: pointer;
+
+    /* On garde position et z-index pour que l'ombre passe au-dessus des autres lignes */
+    position: relative;
+    z-index: 2;
+}
+/* =========================================
+   GESTION INTERACTIVE (AJOUTÉ)
+   ========================================= */
+
+/* La barre de contrôle */
+.parking-control-bar {
+    border: 1px solid #dee2e6; /* Ajoute un contour subtil */
+}
+
+/* Les boutons de tri (On adoucit leur style) */
+.parking-control-bar .btn-outline-secondary {
+    border-color: #ced4da;
+    color: #495057;
+}
+
+/* La barre de recherche (On fignole le design) */
+.parking-search-input {
+    border-color: #ced4da;
+}
+
+.parking-search-input:focus {
+    box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.15); /* Plus douce */
+    border-color: #80bdff;
+}
+
+/* Petite animation au survol des boutons */
+.parking-control-bar .btn-outline-secondary:hover {
+    background-color: #f8f9fa;
+    color: #212529;
+}
+/* =========================================
+   PERSONNALISATION DE LA PAGINATION
+   ========================================= */
+
+/* Couleur du bouton de la page active (le fond) */
+.page-item.active .page-link {
+    background-color: rgb(3, 3, 82) !important; 
+    border-color: rgb(3, 3, 82) !important;     
+    color: white !important;
+}
+
+/* Couleur du texte des autres numéros */
+.page-link {
+    color: rgb(3, 3, 82) !important; 
+}
+
+/* Effet quand on passe la souris sur un numéro */
+.page-link:hover {
+    background-color: rgba(3, 3, 82, 0.1) !important; 
+    color: rgb(3, 3, 82) !important;
+}
+/* =========================================
+   PERSONNALISATION DU MENU DÉROULANT
+   ========================================= */
+
+/* 1. Quand on survole avec la souris (Hover) */
+.dropdown-item:hover, 
+.dropdown-item:focus {
+    /* Un fond très légèrement bleuté et doux */
+    background-color: rgba(3, 3, 82, 0.1) !important; 
+    /* Le texte prend ta couleur bleu foncé */
+    color: rgb(3, 3, 82) !important; 
+}
+
+/* 2. Au moment exact du clic (Active) */
+.dropdown-item:active {
+    /* Le fond devient bleu foncé au lieu du bleu clair Bootstrap */
+    background-color: rgb(3, 3, 82) !important; 
+    /* Le texte passe en blanc pour être bien lisible */
+    color: white !important; 
+}
