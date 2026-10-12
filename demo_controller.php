@@ -89,7 +89,7 @@ switch ($action) {
                 $stmt->execute();
             }
             $stmt->close();
-            $_SESSION["demo_notice"] = "✅ 8 passages réalistes ont été injectés pour aujourd'hui ! Le Dashboard est maintenant animé.";
+            $_SESSION["demo_notice"] = "8 passages réalistes ont été injectés avec succès pour aujourd'hui.";
         }
 
         if (isset($_GET['ajax'])) {
@@ -104,7 +104,7 @@ switch ($action) {
         // Nettoie uniquement les passages créés aujourd'hui
         $db = getDatabaseConnection();
         $db->query("DELETE FROM passages WHERE DATE(date_heure) = CURDATE()");
-        $_SESSION["demo_notice"] = "🧹 Les passages d'aujourd'hui ont été réinitialisés.";
+        $_SESSION["demo_notice"] = "Les passages d'aujourd'hui ont été réinitialisés avec succès.";
 
         if (isset($_GET['ajax'])) {
             header('Content-Type: application/json');

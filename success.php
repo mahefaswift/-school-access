@@ -69,7 +69,7 @@ include "layout/header.php";
 
             <div class="card shadow-lg border-primary mb-3 mx-auto" style="max-width: 400px;">
                 <div class="card-header bg-primary text-white py-2">
-                    <h5 class="mb-0">🛡️ School Access </h5>
+                    <h5 class="mb-0"><i class="fa-solid fa-shield-halved me-1"></i> School Access</h5>
                 </div>
                 <div class="card-body py-3">
                     
@@ -95,7 +95,7 @@ include "layout/header.php";
 
             <div class="d-flex justify-content-center gap-3">
                 <button onclick="window.print()" class="btn btn-dark">
-                    🖨️ Imprimer le Badge
+                    <i class="fa-solid fa-print me-1"></i> Imprimer le Badge
                 </button>
         
                 <a href="/index.php" class="btn btn-primary">Retour à l'accueil</a>

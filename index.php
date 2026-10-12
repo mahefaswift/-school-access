@@ -67,12 +67,12 @@ if ($is_personnel && $_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['code
             if ($nouveau_mouvement == "entree") {
                 $reponse = [
                     'type' => 'success',
-                    'message' => "✅ ENTRÉE : $prenom $nom ($classe) vient d'entrer."
+                    'message' => "<i class='fa-solid fa-arrow-right-to-bracket me-1'></i> ENTRÉE : $prenom $nom ($classe) vient d'entrer."
                 ];
             } else {
                 $reponse = [
                     'type' => 'warning',
-                    'message' => "⬅️ SORTIE : $prenom $nom ($classe) vient de sortir."
+                    'message' => "<i class='fa-solid fa-arrow-right-from-bracket me-1'></i> SORTIE : $prenom $nom ($classe) vient de sortir."
                 ];
             }
         }
@@ -81,7 +81,7 @@ if ($is_personnel && $_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_POST['code
         $stmt->close();
         $reponse = [
             'type' => 'danger',
-            'message' => "❌ ALERTE : Ce badge ($scanned_badge) est inconnu !"
+            'message' => "<i class='fa-solid fa-triangle-exclamation me-1'></i> ALERTE : Ce badge ($scanned_badge) est inconnu !"
         ];
     }
 
@@ -109,7 +109,7 @@ include "layout/header.php";
             </div>
             
             <div class="box">
-                <h1 class="mb-4">Contrôle du Portail 🛡️</h1>
+                <h1 class="mb-4">Contrôle du Portail <i class="fa-solid fa-shield-halved text-primary"></i></h1>
 
                 <div id="zone_alerte" class="alert fs-4 mb-4 fw-bold shadow-sm <?= !empty($message) ? 'alert-' . $alerte_couleur : 'd-none' ?>">
                     <?= $message ?>
@@ -131,7 +131,7 @@ include "layout/header.php";
 
                     <!-- BADGES DE TEST RAPIDE POUR RECRUTEUR -->
                     <div class="mt-4 pt-3 border-top text-center">
-                        <small class="text-muted d-block mb-2 fw-bold">⚡ Simulation Recruteur (testez sans caméra en 1 clic) :</small>
+                        <small class="text-muted d-block mb-2 fw-bold"><i class="fa-solid fa-bolt text-primary me-1"></i> Simulation Recruteur (testez sans caméra en 1 clic) :</small>
                         <div class="d-flex flex-wrap justify-content-center gap-2">
                             <button type="button" class="btn btn-sm btn-outline-primary" onclick="envoyerBadge('SA-2026-7406')">
                                 Paul DUPONT (SA-2026-7406)
@@ -140,7 +140,7 @@ include "layout/header.php";
                                 Rindra (SA-2026-6630)
                             </button>
                             <button type="button" class="btn btn-sm btn-outline-danger" onclick="envoyerBadge('SA-INCONNU-9999')">
-                                ❌ Badge Inconnu (Alerte)
+                                <i class="fa-solid fa-triangle-exclamation me-1"></i> Badge Inconnu (Alerte)
                             </button>
                         </div>
                     </div>
@@ -179,7 +179,7 @@ include "layout/header.php";
                         })
                         .catch(erreur => {
                             zoneAlerte.className = 'alert alert-danger fs-4 mb-4 fw-bold shadow-sm';
-                            zoneAlerte.innerHTML = '❌ Erreur de communication avec la base de données.';
+                            zoneAlerte.innerHTML = '<i class="fa-solid fa-circle-exclamation me-1"></i> Erreur de communication avec la base de données.';
                             zoneAlerte.classList.remove('d-none');
                         })
                         .finally(() => {
@@ -350,7 +350,7 @@ include "layout/header.php";
     <div class="py-5 bg-light border-top border-bottom shadow-sm">
         <div class="container">
             <div class="text-center mb-5">
-                <span class="badge bg-primary px-3 py-2 text-uppercase fw-bold mb-2 shadow-sm">📋 Ardoise du Recruteur</span>
+                <span class="badge bg-primary px-3 py-2 text-uppercase fw-bold mb-2 shadow-sm"><i class="fa-solid fa-sliders me-1"></i> Espace Recruteur</span>
                 <h2 class="display-6 fw-bold text-dark">Testez le projet en direct sans barrière</h2>
                 <p class="text-muted lead mx-auto" style="max-width: 750px;">
                     Choisissez le profil que vous souhaitez tester. Chaque bouton vous plonge immédiatement dans le rôle correspondant, sans identifiant ni mot de passe :
@@ -362,15 +362,15 @@ include "layout/header.php";
                 <div class="col-lg-4 col-md-6">
                     <div class="card h-100 shadow-sm border-0 rounded-4 p-4 text-center" style="background:#ffffff; border-top: 5px solid #16a34a !important;">
                         <div class="mx-auto mb-3 d-flex align-items-center justify-content-center rounded-circle bg-success-subtle text-success" style="width: 75px; height: 75px; font-size: 34px;">
-                            🎓
+                            <i class="fa-solid fa-user-graduate"></i>
                         </div>
-                        <h4 class="fw-bold mb-2 text-dark">Vous voulez être Élève ?</h4>
+                        <h4 class="fw-bold mb-2 text-dark">Profil Élève</h4>
                         <p class="text-muted small mb-4">
                             Simulez l'enregistrement d'un élève : remplissez le formulaire et générez automatiquement votre <strong>Badge officiel avec QR Code unique</strong> prêt à être scanné.
                         </p>
                         <div class="mt-auto d-grid gap-2">
                             <a href="/register.php" class="btn btn-success fw-bold py-2 shadow-sm">
-                                👉 Appuyez ici : Devenir Élève
+                                <i class="fa-solid fa-user-graduate me-1"></i> Accéder : Profil Élève
                             </a>
                             <small class="text-muted" style="font-size: 11px;">Formulaire + génération de QR code autonome</small>
                         </div>
@@ -381,15 +381,15 @@ include "layout/header.php";
                 <div class="col-lg-4 col-md-6">
                     <div class="card h-100 shadow-sm border-0 rounded-4 p-4 text-center" style="background:#ffffff; border-top: 5px solid #2563eb !important;">
                         <div class="mx-auto mb-3 d-flex align-items-center justify-content-center rounded-circle bg-primary-subtle text-primary" style="width: 75px; height: 75px; font-size: 34px;">
-                            🛡️
+                            <i class="fa-solid fa-shield-halved"></i>
                         </div>
-                        <h4 class="fw-bold mb-2 text-dark">Vous voulez être Gardien ?</h4>
+                        <h4 class="fw-bold mb-2 text-dark">Profil Gardien</h4>
                         <p class="text-muted small mb-4">
                             Passez au portail de sécurité : pilotez le <strong>Scanner QR caméra</strong>, testez la saisie rapide, l'alternance automatique Entrée/Sortie et le verrou anti-spam (3s).
                         </p>
                         <div class="mt-auto d-grid gap-2">
                             <a href="/demo_controller.php?action=login_sous_admin&redirect=/index.php" class="btn btn-primary fw-bold py-2 shadow-sm">
-                                👉 Appuyez ici : Devenir Gardien
+                                <i class="fa-solid fa-shield-halved me-1"></i> Accéder : Poste Gardien
                             </a>
                             <small class="text-muted" style="font-size: 11px;">Connexion 1-clic immédiate · Contrôle du Portail</small>
                         </div>
@@ -400,15 +400,15 @@ include "layout/header.php";
                 <div class="col-lg-4 col-md-6 mx-auto">
                     <div class="card h-100 shadow-sm border-0 rounded-4 p-4 text-center" style="background:#ffffff; border-top: 5px solid #d97706 !important;">
                         <div class="mx-auto mb-3 d-flex align-items-center justify-content-center rounded-circle bg-warning-subtle text-warning" style="width: 75px; height: 75px; font-size: 34px;">
-                            👑
+                            <i class="fa-solid fa-user-gear"></i>
                         </div>
-                        <h4 class="fw-bold mb-2 text-dark">Vous voulez être Grand Admin ?</h4>
+                        <h4 class="fw-bold mb-2 text-dark">Profil Grand Admin</h4>
                         <p class="text-muted small mb-4">
                             Accédez à la supervision complète : <strong>Tableau de Bord interactif</strong> (KPIs en temps réel, Chart.js Donut, DataTables des passages) et <strong>Gestion du Personnel</strong>.
                         </p>
                         <div class="mt-auto d-grid gap-2">
                             <a href="/demo_controller.php?action=login_grand_admin&redirect=/dashboard.php" class="btn text-white fw-bold py-2 shadow-sm" style="background-color: #d97706; border: 1px solid #b45309; color: #ffffff !important;">
-                                👉 Appuyez ici : Devenir Grand Admin
+                                <i class="fa-solid fa-user-gear me-1"></i> Accéder : Grand Admin
                             </a>
                             <small class="text-muted" style="font-size: 11px;">Connexion 1-clic immédiate · Dashboard & Administration</small>
                         </div>

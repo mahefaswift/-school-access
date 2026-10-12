@@ -241,11 +241,11 @@ body {
         <div class="container">
             <div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom border-secondary">
                 <div class="d-flex align-items-center gap-3">
-                    <span class="demo-pill-badge">🎛️ Ardoise Recruteur</span>
+                    <span class="demo-pill-badge"><i class="fa-solid fa-sliders me-1"></i> Console Recruteur</span>
                     <h5 class="mb-0 text-white fw-bold">Explorez 100% des fonctionnalités en 1 clic</h5>
                 </div>
                 <button type="button" class="btn btn-sm btn-outline-light" onclick="toggleDemoDrawer()">
-                    ✕ Fermer
+                    <i class="fa-solid fa-xmark me-1"></i> Fermer
                 </button>
             </div>
 
@@ -253,48 +253,48 @@ body {
                 <!-- COLONNE 1 : RÔLES & PERMISSIONS -->
                 <div class="col-md-4">
                     <div class="demo-card-box">
-                        <h6><i class="fa-solid fa-user-shield"></i> Choisissez votre Profil</h6>
+                        <h6><i class="fa-solid fa-user-shield me-1"></i> Choisissez votre Profil</h6>
                         <p class="text-secondary small mb-3">
-                            Appuyez sur le bouton de votre choix selon le rôle que vous souhaitez tester :
+                            Sélectionnez le rôle que vous souhaitez tester :
                         </p>
                         
                         <div class="d-grid gap-2">
                             <!-- PROFIL ÉLÈVE -->
                             <div class="p-2 rounded bg-black bg-opacity-25 border border-success border-opacity-25">
                                 <div class="d-flex justify-content-between align-items-center mb-1">
-                                    <span class="text-success fw-bold small">1. Vous voulez être un Élève ?</span>
+                                    <span class="text-success fw-bold small">1. Profil Élève</span>
                                 </div>
                                 <p class="text-secondary mb-2" style="font-size: 11px;">
-                                    Générez votre badge avec QR code officiel ou simulez le passage de votre moto au portail.
+                                    Générez un badge officiel avec QR Code ou simulez le passage d'une moto au portail.
                                 </p>
                                 <a href="/register.php" class="demo-btn-action w-100 justify-content-center" style="background:#16a34a; color:#fff!important;">
-                                    🎓 <strong>Appuyez ici : Devenir Élève</strong>
+                                    <i class="fa-solid fa-user-graduate me-1"></i> <strong>Accéder : Profil Élève</strong>
                                 </a>
                             </div>
 
                             <!-- PROFIL GARDIEN -->
                             <div class="p-2 rounded bg-black bg-opacity-25 border border-primary border-opacity-25 mt-1">
                                 <div class="d-flex justify-content-between align-items-center mb-1">
-                                    <span class="text-primary fw-bold small">2. Vous voulez être Gardien ?</span>
+                                    <span class="text-primary fw-bold small">2. Profil Gardien</span>
                                 </div>
                                 <p class="text-secondary mb-2" style="font-size: 11px;">
-                                    Accédez au terminal du portail de sécurité avec le scanner QR et la validation en temps réel.
+                                    Accédez au terminal du portail avec le scanner QR et la validation des flux en direct.
                                 </p>
                                 <a href="/demo_controller.php?action=login_sous_admin&redirect=/index.php" class="demo-btn-action demo-btn-gardien w-100 justify-content-center">
-                                    🛡️ <strong>Appuyez ici : Devenir Gardien</strong>
+                                    <i class="fa-solid fa-shield-halved me-1"></i> <strong>Accéder : Poste Gardien</strong>
                                 </a>
                             </div>
 
                             <!-- PROFIL GRAND ADMIN -->
                             <div class="p-2 rounded bg-black bg-opacity-25 border border-warning border-opacity-25 mt-1">
                                 <div class="d-flex justify-content-between align-items-center mb-1">
-                                    <span class="text-warning fw-bold small">3. Vous voulez être Grand Admin ?</span>
+                                    <span class="text-warning fw-bold small">3. Profil Grand Admin</span>
                                 </div>
                                 <p class="text-secondary mb-2" style="font-size: 11px;">
-                                    Supervisez le Tableau de bord (KPIs, Donut Chart.js, flux DataTables) et la gestion du personnel.
+                                    Supervisez le Tableau de bord (KPIs, Chart.js Donut, flux DataTables) et la gestion des comptes.
                                 </p>
                                 <a href="/demo_controller.php?action=login_grand_admin&redirect=/dashboard.php" class="demo-btn-action demo-btn-admin w-100 justify-content-center">
-                                    👑 <strong>Appuyez ici : Devenir Grand Admin</strong>
+                                    <i class="fa-solid fa-user-gear me-1"></i> <strong>Accéder : Grand Admin</strong>
                                 </a>
                             </div>
                         </div>
@@ -304,7 +304,7 @@ body {
                 <!-- COLONNE 2 : SIMULATEUR DE BADGES (SANS CAMÉRA) -->
                 <div class="col-md-5">
                     <div class="demo-card-box">
-                        <h6><i class="fa-solid fa-qrcode"></i> Simulateur de Badges (En direct)</h6>
+                        <h6><i class="fa-solid fa-qrcode me-1"></i> Simulateur de Badges (En direct)</h6>
                         <p class="text-secondary small mb-2">
                             Cliquez sur un badge ci-dessous pour tester l'entrée/sortie, l'anti-spam (3s) et les alertes sans caméra :
                         </p>
@@ -332,7 +332,7 @@ body {
 
                         <div class="demo-badge-trigger border-danger" onclick="simulerScanBadge('SA-INCONNU-9999')">
                             <div>
-                                <span class="text-danger fw-bold">❌ Badge Inconnu (Test Alerte)</span>
+                                <span class="text-danger fw-bold"><i class="fa-solid fa-triangle-exclamation me-1"></i> Badge non répertorié (Test Alerte)</span>
                             </div>
                             <code class="text-danger">SA-INCONNU-9999</code>
                         </div>
@@ -346,36 +346,36 @@ body {
                 <!-- COLONNE 3 : NAVIGATION DIRECTE & DONNÉES -->
                 <div class="col-md-4">
                     <div class="demo-card-box">
-                        <h6><i class="fa-solid fa-compass"></i> Accès direct aux Vues</h6>
+                        <h6><i class="fa-solid fa-compass me-1"></i> Accès direct aux Vues</h6>
                         
                         <a href="/index.php" class="demo-link-item <?= ($current_page == '/index.php' || $current_page == '/') ? 'active' : '' ?>">
-                            🚪 <strong>Portail & Scan QR</strong>
+                            <i class="fa-solid fa-door-open me-2"></i> <strong>Portail & Scan QR</strong>
                             <span class="text-secondary d-block" style="font-size: 11px;">Scanner caméra + validation en direct</span>
                         </a>
 
                         <a href="/dashboard.php" class="demo-link-item <?= ($current_page == '/dashboard.php') ? 'active' : '' ?>">
-                            📊 <strong>Tableau de Bord</strong>
+                            <i class="fa-solid fa-chart-pie me-2"></i> <strong>Tableau de Bord</strong>
                             <span class="text-secondary d-block" style="font-size: 11px;">Statistiques du jour, Donut Chart.js, DataTables</span>
                         </a>
 
                         <a href="/gestion_personnel.php" class="demo-link-item <?= ($current_page == '/gestion_personnel.php') ? 'active' : '' ?>">
-                            👥 <strong>Gestion du Personnel</strong>
+                            <i class="fa-solid fa-users-gear me-2"></i> <strong>Gestion du Personnel</strong>
                             <span class="text-secondary d-block" style="font-size: 11px;">Gestion des comptes gardiens & administrateurs</span>
                         </a>
 
                         <a href="/register.php" class="demo-link-item <?= ($current_page == '/register.php') ? 'active' : '' ?>">
-                            🎫 <strong>Demande de Badge</strong>
+                            <i class="fa-solid fa-id-card me-2"></i> <strong>Demande de Badge</strong>
                             <span class="text-secondary d-block" style="font-size: 11px;">Formulaire + génération autonome de QR code</span>
                         </a>
 
                         <div class="mt-3 pt-2 border-top border-secondary">
-                            <span class="text-secondary small d-block mb-2">⚡ Données du Dashboard :</span>
+                            <span class="text-secondary small d-block mb-2"><i class="fa-solid fa-database me-1"></i> Données du Dashboard :</span>
                             <div class="d-flex gap-2">
                                 <a href="/demo_controller.php?action=seed_today&redirect=/dashboard.php" class="btn btn-sm btn-outline-success flex-grow-1" style="font-size: 11px;">
-                                    ⚡ Animer le Dashboard
+                                    <i class="fa-solid fa-chart-line me-1"></i> Simuler l'activité
                                 </a>
                                 <a href="/demo_controller.php?action=reset_today&redirect=/dashboard.php" class="btn btn-sm btn-outline-danger flex-grow-1" style="font-size: 11px;">
-                                    🧹 Vider le jour
+                                    <i class="fa-solid fa-rotate-left me-1"></i> Réinitialiser le jour
                                 </a>
                             </div>
                         </div>
@@ -393,14 +393,14 @@ body {
             
             <!-- GAUCHE : IDENTIFICATION & RÔLE ACTUEL -->
             <div class="d-flex align-items-center gap-2">
-                <span class="demo-pill-badge">🎛️ Sandbox Démo</span>
+                <span class="demo-pill-badge"><i class="fa-solid fa-sliders me-1"></i> Console Démo</span>
                 <span class="text-light small d-none d-md-inline">Rôle actif :</span>
                 <?php if ($current_role === 'grand_admin') { ?>
-                    <span class="demo-role-indicator demo-role-grand-admin">👑 Grand Admin (Alicia)</span>
+                    <span class="demo-role-indicator demo-role-grand-admin"><i class="fa-solid fa-user-gear me-1"></i> Grand Admin (Alicia)</span>
                 <?php } elseif ($current_role === 'sous_admin') { ?>
-                    <span class="demo-role-indicator demo-role-sous-admin">🛡️ Gardien (Tovo)</span>
+                    <span class="demo-role-indicator demo-role-sous-admin"><i class="fa-solid fa-shield-halved me-1"></i> Gardien (Tovo)</span>
                 <?php } else { ?>
-                    <span class="demo-role-indicator demo-role-visiteur">👤 Visiteur (Public)</span>
+                    <span class="demo-role-indicator demo-role-visiteur"><i class="fa-solid fa-user me-1"></i> Visiteur (Public)</span>
                 <?php } ?>
             </div>
 
@@ -408,17 +408,17 @@ body {
             <div class="d-flex align-items-center gap-2 flex-wrap">
                 <span class="text-secondary small d-none d-lg-inline">Profil à tester :</span>
                 <a href="/register.php" class="demo-btn-action" style="background:#16a34a; color:#fff!important;" title="Tester le parcours Élève (formulaire et QR code)">
-                    🎓 Élève
+                    <i class="fa-solid fa-user-graduate me-1"></i> Élève
                 </a>
                 <a href="/demo_controller.php?action=login_sous_admin&redirect=/index.php" class="demo-btn-action demo-btn-gardien" title="Tester le parcours Gardien au portail (1 clic)">
-                    🛡️ Gardien
+                    <i class="fa-solid fa-shield-halved me-1"></i> Gardien
                 </a>
                 <a href="/demo_controller.php?action=login_grand_admin&redirect=/dashboard.php" class="demo-btn-action demo-btn-admin" title="Tester le parcours Grand Admin (1 clic)">
-                    👑 Grand Admin
+                    <i class="fa-solid fa-user-gear me-1"></i> Grand Admin
                 </a>
                 <?php if ($current_role !== 'visiteur') { ?>
                     <a href="/demo_controller.php?action=logout&redirect=<?= urlencode($current_page) ?>" class="demo-btn-action demo-btn-visiteur" title="Déconnexion (Mode Visiteur)">
-                        👤 Déconnexion
+                        <i class="fa-solid fa-arrow-right-from-bracket me-1"></i> Déconnexion
                     </a>
                 <?php } ?>
             </div>
@@ -426,7 +426,7 @@ body {
             <!-- DROITE : BOUTON TIROIR COMPLET -->
             <div>
                 <button type="button" class="demo-btn-action demo-btn-drawer" onclick="toggleDemoDrawer()">
-                    🚀 Ardoise Complète & Simulateur
+                    <i class="fa-solid fa-layer-group me-1"></i> Console & Simulateur
                 </button>
             </div>
 
@@ -457,7 +457,7 @@ function simulerScanBadge(codeBadge) {
     const box = document.getElementById('demo-scan-result');
     const txt = document.getElementById('demo-scan-text');
     box.className = 'alert alert-info small mb-0 mt-2';
-    txt.innerHTML = '⏳ Traitement du scan de <code>' + codeBadge + '</code>...';
+    txt.innerHTML = '<i class="fa-solid fa-spinner fa-spin me-1"></i> Traitement du scan de <code>' + codeBadge + '</code>...';
     box.classList.remove('d-none');
 
     const params = new URLSearchParams();
@@ -491,7 +491,7 @@ function simulerScanBadge(codeBadge) {
         // Si non connecté en tant que personnel, index.php ne traite pas le POST
         // On propose de se connecter en 1 clic
         box.className = 'alert alert-warning small mb-0 mt-2';
-        txt.innerHTML = '⚠️ Pour valider ce scan au portail, <a href="/demo_controller.php?action=login_sous_admin&redirect=/index.php" class="alert-link text-decoration-underline">connectez-vous d\'abord en Gardien ou Grand Admin (1 clic)</a>.';
+        txt.innerHTML = '<i class="fa-solid fa-triangle-exclamation me-1"></i> Pour valider ce scan au portail, <a href="/demo_controller.php?action=login_sous_admin&redirect=/index.php" class="alert-link text-decoration-underline">connectez-vous d\'abord en Gardien ou Grand Admin (1 clic)</a>.';
     });
 }
 </script>
