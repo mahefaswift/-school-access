@@ -1,5 +1,10 @@
 <?php
-include "layout/header.php";
+if (!ob_get_level()) {
+    ob_start();
+}
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 // 1. INITIALISATION DES VARIABLES
 $first_name = "";
@@ -71,7 +76,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
             $_SESSION["badge_code"] = $badge_code;
             $_SESSION["first_name"] = $first_name;
 
-            header("location: /success.php");
+            if (!headers_sent()) {
+                header("Location: /success.php");
+            } else {
+                echo "<script>window.location.href='/success.php';</script>";
+            }
             exit;
         } else {
             $messageError = "Erreur lors de l'enregistrement : " . $statement->error;
@@ -79,6 +88,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         }
     }
 }
+
+include "layout/header.php";
 ?>
 
 <div class="container py-5">

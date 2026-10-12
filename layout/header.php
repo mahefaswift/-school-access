@@ -1,4 +1,7 @@
 <?php
+if (!ob_get_level()) {
+    ob_start();
+}
 // On initialise la session uniquement si elle n'est pas déjà active
 if (session_status() === PHP_SESSION_NONE) {
     session_start();

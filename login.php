@@ -1,12 +1,18 @@
 <?php
-include "layout/header.php";
+if (!ob_get_level()) {
+    ob_start();
+}
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
 // Si déjà connecté, on redirige vers la bonne page selon le rôle
 if (isset($_SESSION["email"])) {
-    if ($_SESSION["role"] === "grand_admin") {
-        header("location: /dashboard.php"); 
+    $dest = ($_SESSION["role"] === "grand_admin") ? "/dashboard.php" : "/index.php";
+    if (!headers_sent()) {
+        header("Location: " . $dest);
     } else {
-        header("location: /index.php"); 
+        echo "<script>window.location.href='" . $dest . "';</script>";
     }
     exit;
 }
@@ -52,12 +58,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     $_SESSION["role"] = $db_role; 
 
                     // V2.0 : L'aiguillage (Redirection selon le rôle)
-                    if ($_SESSION["role"] === "grand_admin") {
-                        // Le Grand Admin va sur le tableau de bord
-                        header("location: /dashboard.php"); 
+                    $dest = ($_SESSION["role"] === "grand_admin") ? "/dashboard.php" : "/index.php";
+                    if (!headers_sent()) {
+                        header("Location: " . $dest);
                     } else {
-                        // Le Sous-Admin (Gardien) va directement sur le scan
-                        header("location: /index.php"); 
+                        echo "<script>window.location.href='" . $dest . "';</script>";
                     }
                     exit;
                 }
@@ -70,6 +75,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $statement->close();
     }
 }
+
+include "layout/header.php";
 ?>
 
 <div class="container py-5">
