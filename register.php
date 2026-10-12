@@ -33,9 +33,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         $created_at = date('Y-m-d H:i:s'); 
 
         // --- NOUVEAU CODE HORS-LIGNE ---
-        include "tools/phpqrcode/qrlib.php";
+        include_once "tools/phpqrcode/qrlib.php";
         
         $chemin_dossier = "images/qrcodes/";
+        if (!is_dir($chemin_dossier)) {
+            mkdir($chemin_dossier, 0777, true);
+        }
         $chemin_fichier = $chemin_dossier . $badge_code . ".png";
         
         QRcode::png($badge_code, $chemin_fichier, QR_ECLEVEL_L, 5);

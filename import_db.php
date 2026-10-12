@@ -5,18 +5,9 @@ error_reporting(E_ALL);
 $secret = $_GET['secret'] ?? '';
 if ($secret !== 'mahefaswift2026') die('Accès refusé');
 
-// Connexion directe avec les credentials Railway MySQL
-$conn = new mysqli(
-    'mysql.railway.internal',
-    'root',
-    'cJZEGrQmqRRdcHMZgdLtMJxwTXkCKiIN',
-    'railway',
-    3306
-);
-
-if ($conn->connect_error) {
-    die("❌ Connexion échouée : " . $conn->connect_error);
-}
+// Connexion à la base de données via le module centralisé
+require_once __DIR__ . '/tools/db.php';
+$conn = getDatabaseConnection();
 echo "✅ Connexion MySQL OK!<br><pre>";
 
 $sql = file_get_contents(__DIR__ . '/school_access_db (1).sql');
