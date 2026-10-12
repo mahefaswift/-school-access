@@ -104,6 +104,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </div>
             </div>
         </form>
+
+        <!-- ACCÈS RAPIDE RECRUTEUR / DÉMO -->
+        <div class="mt-4 pt-3 border-top text-center">
+            <span class="badge bg-secondary mb-2">Mode Recruteur / Démo</span>
+            <p class="small text-muted mb-2">Testez immédiatement les rôles sans saisir d'identifiant :</p>
+            <div class="d-grid gap-2">
+                <a href="/demo_controller.php?action=login_grand_admin&redirect=/dashboard.php" class="btn btn-sm btn-outline-warning text-dark fw-bold">
+                    👑 Grand Admin (Alicia)
+                </a>
+                <a href="/demo_controller.php?action=login_sous_admin&redirect=/index.php" class="btn btn-sm btn-outline-primary fw-bold">
+                    🛡️ Gardien / Sous-Admin (Tovo)
+                </a>
+            </div>
+        </div>
     </div>
 </div>
 

@@ -128,6 +128,22 @@ include "layout/header.php";
                         
                         <button type="submit" id="btn_submit" class="btn">Valider l'entrée/sortie</button>
                     </form>
+
+                    <!-- BADGES DE TEST RAPIDE POUR RECRUTEUR -->
+                    <div class="mt-4 pt-3 border-top text-center">
+                        <small class="text-muted d-block mb-2 fw-bold">⚡ Simulation Recruteur (testez sans caméra en 1 clic) :</small>
+                        <div class="d-flex flex-wrap justify-content-center gap-2">
+                            <button type="button" class="btn btn-sm btn-outline-primary" onclick="envoyerBadge('SA-2026-7406')">
+                                Paul DUPONT (SA-2026-7406)
+                            </button>
+                            <button type="button" class="btn btn-sm btn-outline-success" onclick="envoyerBadge('SA-2026-6630')">
+                                Rindra (SA-2026-6630)
+                            </button>
+                            <button type="button" class="btn btn-sm btn-outline-danger" onclick="envoyerBadge('SA-INCONNU-9999')">
+                                ❌ Badge Inconnu (Alerte)
+                            </button>
+                        </div>
+                    </div>
                 </div>
 
                 <script src="html5-qrcode.js"></script>
