@@ -294,7 +294,20 @@ if (!function_exists('getDatabaseConnection')) {
         $db   = $urlConfig['db']   ?? (getenv('MYSQLDATABASE') ?: getenv('DB_NAME') ?: 'school_access_db');
         $port = $urlConfig['port'] ?? (int)(getenv('MYSQLPORT') ?: getenv('DB_PORT') ?: 3306);
 
-        // Tenter MySQL si un hôte est spécifié
+        // Détection de Render
+        $isRender = !empty(getenv('RENDER'))
+            || !empty(getenv('RENDER_SERVICE_ID'))
+            || !empty(getenv('RENDER_EXTERNAL_URL'))
+            || !empty(getenv('RENDER_INSTANCE_ID'));
+
+        // Sur Render : si l'hôte est 127.0.0.1, localhost ou vide, basculer IMMÉDIATEMENT sur SQLite
+        // (L'utilisateur n'a donc rien besoin de supprimer dans ses variables Render !)
+        if ($isRender && (empty($host) || $host === '127.0.0.1' || $host === 'localhost')) {
+            $activeConn = getSQLiteFallbackConnection();
+            return $activeConn;
+        }
+
+        // Tenter MySQL si configuré (local ou base Cloud externe)
         if (!empty($host)) {
             $primaryHost = ($host === 'localhost') ? '127.0.0.1' : $host;
             $hostsToTry = array_filter(array_unique([$primaryHost, '127.0.0.1', 'localhost']));
