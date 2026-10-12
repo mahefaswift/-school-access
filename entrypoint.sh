@@ -1,0 +1,82 @@
+#!/bin/bash
+set -e
+
+# ==============================================================================
+# ENTRYPOINT POUR RENDER / CLOUD DOCKER
+# Gère automatiquement :
+# 1. Base externe si variables présentes (DB_SERVER, MYSQLHOST, MYSQL_URL...)
+# 2. OU Démarrage autonome d'une instance MariaDB interne pré-remplie
+# 3. Démarrage du serveur Web PHP sur le port dynamique injecté par Render ($PORT)
+# ==============================================================================
+
+if [ -n "$MYSQLHOST" ] || [ -n "$DB_SERVER" ] || [ -n "$MYSQL_URL" ] || [ -n "$DATABASE_URL" ]; then
+    echo "[Render] Configuration de base de données externe détectée (${MYSQLHOST:-$DB_SERVER})."
+else
+    echo "[Render] Aucune base externe configurée : initialisation de MariaDB interne..."
+
+    # Création des répertoires requis
+    mkdir -p /var/run/mysqld /var/lib/mysql
+    chown -R mysql:mysql /var/run/mysqld /var/lib/mysql
+
+    # Initialisation du datadir si vide
+    if [ ! -d "/var/lib/mysql/mysql" ]; then
+        echo "[Render] Initialisation du système de fichiers MariaDB..."
+        mariadb-install-db --user=mysql --datadir=/var/lib/mysql >/dev/null 2>&1 || mysql_install_db --user=mysql --datadir=/var/lib/mysql >/dev/null 2>&1 || true
+    fi
+
+    # Démarrage de MariaDB en arrière-plan
+    echo "[Render] Démarrage du service MariaDB..."
+    if [ -x "/etc/init.d/mariadb" ]; then
+        /etc/init.d/mariadb start || service mariadb start || /usr/bin/mysqld_safe --datadir='/var/lib/mysql' --user=mysql &
+    else
+        /usr/bin/mysqld_safe --datadir='/var/lib/mysql' --user=mysql &
+    fi
+
+    # Attente que MariaDB réponde
+    echo "[Render] Attente de la disponibilité de MySQL..."
+    READY=0
+    for i in $(seq 1 30); do
+        if mysqladmin ping --silent 2>/dev/null; then
+            READY=1
+            echo "[Render] MariaDB est prêt et opérationnel !"
+            break
+        fi
+        sleep 1
+    done
+
+    if [ "$READY" -eq 1 ]; then
+        # Configuration des permissions pour 127.0.0.1 et localhost
+        mariadb -e "CREATE USER IF NOT EXISTS 'root'@'127.0.0.1' IDENTIFIED BY '';" 2>/dev/null || true
+        mariadb -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'127.0.0.1' WITH GRANT OPTION;" 2>/dev/null || true
+        mariadb -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' WITH GRANT OPTION;" 2>/dev/null || true
+        mariadb -e "FLUSH PRIVILEGES;" 2>/dev/null || true
+
+        # Création de la base
+        mariadb -e "CREATE DATABASE IF NOT EXISTS school_access_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;" 2>/dev/null || true
+
+        # Importation des tables et données
+        TABLE_COUNT=$(mariadb -N -s -e "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = 'school_access_db';" 2>/dev/null || echo "0")
+        if [ "$TABLE_COUNT" = "0" ] || [ -z "$TABLE_COUNT" ]; then
+            echo "[Render] Importation initiale des tables dans school_access_db..."
+            if [ -f "/app/school_access_db.sql" ]; then
+                mariadb school_access_db < /app/school_access_db.sql || true
+            elif [ -f "/app/school_access_db (1).sql" ]; then
+                mariadb school_access_db < "/app/school_access_db (1).sql" || true
+            fi
+            echo "[Render] Données initiales importées avec succès !"
+        else
+            echo "[Render] Tables déjà existantes ($TABLE_COUNT tables)."
+        fi
+    else
+        echo "[Render] Avertissement : MariaDB interne n'a pas répondu dans les délais impartis."
+    fi
+fi
+
+# Préparation du répertoire des QR codes
+mkdir -p /app/images/qrcodes
+chmod -R 777 /app/images/qrcodes 2>/dev/null || true
+
+# Render utilise la variable $PORT (par défaut 10000 sur Render)
+PORT="${PORT:-10000}"
+echo "[Render] Démarrage du serveur PHP sur 0.0.0.0:${PORT}..."
+exec php -S 0.0.0.0:${PORT}

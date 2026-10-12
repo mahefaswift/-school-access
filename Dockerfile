@@ -1,10 +1,18 @@
 FROM php:8.2-cli
 
-# Installer mysqli et PDO
+# Installer MariaDB et ses dépendances
+RUN apt-get update && apt-get install -y \
+    mariadb-server \
+    mariadb-client \
+    && rm -rf /var/lib/apt/lists/*
+
+# Installer mysqli et PDO MySQL pour PHP
 RUN docker-php-ext-install mysqli pdo pdo_mysql
 
 WORKDIR /app
 COPY . /app/
 
-# Railway injecte $PORT dynamiquement
-CMD ["sh", "-c", "php -S 0.0.0.0:${PORT:-8080}"]
+RUN chmod +x /app/entrypoint.sh
+
+# Point d'entrée pour Render / Cloud
+CMD ["/app/entrypoint.sh"]

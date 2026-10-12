@@ -34,13 +34,16 @@ function getDatabaseConnection() {
         }
     }
 
-    // 2. Détection de l'environnement d'hébergement Railway
+    // 2. Détection de la plateforme d'hébergement (Render vs Railway vs Local)
+    $isRender = !empty(getenv('RENDER'))
+        || !empty(getenv('RENDER_SERVICE_ID'))
+        || !empty(getenv('RENDER_EXTERNAL_URL'))
+        || !empty(getenv('RENDER_INSTANCE_ID'));
+
     $isRailway = !empty(getenv('RAILWAY_ENVIRONMENT'))
         || !empty(getenv('RAILWAY_PROJECT_ID'))
         || !empty(getenv('RAILWAY_STATIC_URL'))
-        || !empty(getenv('RAILWAY_PUBLIC_DOMAIN'))
-        || (isset($_SERVER['PWD']) && $_SERVER['PWD'] === '/app')
-        || (is_dir('/app') && file_exists('/app/tools/db.php'));
+        || !empty(getenv('RAILWAY_PUBLIC_DOMAIN'));
 
     // 3. Extraction depuis une URL de base de données (ex: MYSQL_URL / DATABASE_URL)
     $urlConfig = [];
@@ -57,7 +60,7 @@ function getDatabaseConnection() {
     }
 
     // 4. Résolution ordonnée des paramètres
-    // Hôte : URL > MYSQLHOST > MYSQL_HOST > DB_SERVER > DB_HOST > Fallback Railway / Local
+    // Hôte : URL > MYSQLHOST > MYSQL_HOST > DB_SERVER > DB_HOST > Fallback (Railway / Render / Local)
     $host = $urlConfig['host']
         ?? (getenv('MYSQLHOST') ?: null)
         ?? (getenv('MYSQL_HOST') ?: null)
@@ -140,7 +143,8 @@ function getDatabaseConnection() {
             'port' => $port,
             'user' => $user,
             'db'   => $db,
-            'isRailway' => $isRailway
+            'isRailway' => $isRailway,
+            'isRender'  => $isRender
         ]);
         exit;
     }
@@ -351,21 +355,32 @@ function showFriendlyDbError($errorMessage, array $details) {
                 </tr>
                 <tr>
                     <td>Environnement</td>
-                    <td><code><?= $details['isRailway'] ? 'Railway (Production / Cloud)' : 'Local / Docker' ?></code></td>
+                    <td><code><?= !empty($details['isRender']) ? 'Render (Cloud Web Service)' : (!empty($details['isRailway']) ? 'Railway (Cloud)' : 'Local / Docker') ?></code></td>
                 </tr>
             </table>
 
             <div class="guide-box">
-                <strong>💡 Comment résoudre ce problème sur Railway :</strong>
-                <ol>
-                    <li>Rendez-vous sur votre dashboard <strong>Railway</strong>.</li>
-                    <li>Cliquez sur votre service <strong>SchoolAccess</strong> (Web) &gt; onglet <strong>Variables</strong>.</li>
-                    <li>Ajoutez la variable référencée :<br>
-                        <code>MYSQL_URL = ${{MySQL.MYSQL_URL}}</code><br>
-                        <em>(ou <code>MYSQLHOST = ${{MySQL.MYSQLHOST}}</code> et <code>MYSQLPASSWORD = ${{MySQL.MYSQLPASSWORD}}</code>)</em>.
-                    </li>
-                    <li>Railway redéploiera le service automatiquement en quelques secondes.</li>
-                </ol>
+                <?php if (!empty($details['isRender'])): ?>
+                    <strong>💡 Comment configurer sur Render :</strong>
+                    <ol>
+                        <li>Si vous utilisez une base MySQL externe, allez sur votre dashboard <strong>Render</strong> &gt; votre Web Service &gt; onglet <strong>Environment</strong>.</li>
+                        <li>Ajoutez vos variables d'accès : <code>DB_SERVER</code>, <code>DB_USER</code>, <code>DB_PASS</code>, <code>DB_NAME</code> (ou <code>MYSQL_URL</code>).</li>
+                        <li><em>Note : Si aucune base externe n'est configurée, le conteneur démarre automatiquement MariaDB interne via <code>entrypoint.sh</code>.</em></li>
+                    </ol>
+                <?php elseif (!empty($details['isRailway'])): ?>
+                    <strong>💡 Comment résoudre ce problème sur Railway :</strong>
+                    <ol>
+                        <li>Rendez-vous sur votre dashboard <strong>Railway</strong>.</li>
+                        <li>Cliquez sur votre service <strong>SchoolAccess</strong> &gt; onglet <strong>Variables</strong>.</li>
+                        <li>Ajoutez la référence : <code>MYSQL_URL = ${{MySQL.MYSQL_URL}}</code> (ou <code>MYSQLHOST</code>, <code>MYSQLPASSWORD</code>...).</li>
+                    </ol>
+                <?php else: ?>
+                    <strong>💡 Comment résoudre en local :</strong>
+                    <ol>
+                        <li>Assurez-vous que MySQL / MariaDB est bien démarré (ex: XAMPP, MAMP ou service local).</li>
+                        <li>Vérifiez les paramètres dans votre fichier <code>.env</code> (DB_SERVER, DB_USER, DB_PASS, DB_NAME).</li>
+                    </ol>
+                <?php endif; ?>
             </div>
 
             <div class="btn-row">
