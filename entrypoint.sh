@@ -9,10 +9,14 @@ set -e
 # 3. Démarrage du serveur Web PHP sur le port dynamique injecté par Render ($PORT)
 # ==============================================================================
 
-if [ -n "$MYSQLHOST" ] || [ -n "$DB_SERVER" ] || [ -n "$MYSQL_URL" ] || [ -n "$DATABASE_URL" ]; then
-    echo "[Render] Configuration de base de données externe détectée (${MYSQLHOST:-$DB_SERVER})."
+EXTERNAL_HOST="${MYSQLHOST:-$DB_SERVER}"
+
+if [ -n "$EXTERNAL_HOST" ] && [ "$EXTERNAL_HOST" != "127.0.0.1" ] && [ "$EXTERNAL_HOST" != "localhost" ]; then
+    echo "[Render] Configuration de base de données externe détectée ($EXTERNAL_HOST)."
+elif [ -n "$MYSQL_URL" ] || [ -n "$DATABASE_URL" ]; then
+    echo "[Render] URL de base de données externe détectée."
 else
-    echo "[Render] Aucune base externe configurée : initialisation de MariaDB interne..."
+    echo "[Render] Mode MariaDB interne actif (127.0.0.1)..."
 
     # Création des répertoires requis
     mkdir -p /var/run/mysqld /var/lib/mysql
