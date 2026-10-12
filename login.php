@@ -117,10 +117,10 @@ include "layout/header.php";
             <span class="badge bg-secondary mb-2">Mode Recruteur / Démo</span>
             <p class="small text-muted mb-2">Testez immédiatement les rôles sans saisir d'identifiant :</p>
             <div class="d-grid gap-2">
-                <a href="/demo_controller.php?action=login_grand_admin&redirect=/dashboard.php" class="btn btn-sm btn-outline-warning text-dark fw-bold">
+                <a href="/demo_controller.php?action=login_grand_admin&redirect=/dashboard.php" class="btn btn-sm fw-bold shadow-sm text-white" style="background-color: #d97706; border: 1px solid #b45309; color: #ffffff !important;">
                     👑 Grand Admin (Alicia)
                 </a>
-                <a href="/demo_controller.php?action=login_sous_admin&redirect=/index.php" class="btn btn-sm btn-outline-primary fw-bold">
+                <a href="/demo_controller.php?action=login_sous_admin&redirect=/index.php" class="btn btn-sm btn-primary fw-bold text-white shadow-sm">
                     🛡️ Gardien / Sous-Admin (Tovo)
                 </a>
             </div>

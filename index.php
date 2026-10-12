@@ -407,7 +407,7 @@ include "layout/header.php";
                             Accédez à la supervision complète : <strong>Tableau de Bord interactif</strong> (KPIs en temps réel, Chart.js Donut, DataTables des passages) et <strong>Gestion du Personnel</strong>.
                         </p>
                         <div class="mt-auto d-grid gap-2">
-                            <a href="/demo_controller.php?action=login_grand_admin&redirect=/dashboard.php" class="btn btn-warning text-dark fw-bold py-2 shadow-sm">
+                            <a href="/demo_controller.php?action=login_grand_admin&redirect=/dashboard.php" class="btn text-white fw-bold py-2 shadow-sm" style="background-color: #d97706; border: 1px solid #b45309; color: #ffffff !important;">
                                 👉 Appuyez ici : Devenir Grand Admin
                             </a>
                             <small class="text-muted" style="font-size: 11px;">Connexion 1-clic immédiate · Dashboard & Administration</small>
