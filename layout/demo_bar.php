@@ -251,28 +251,52 @@ body {
 
             <div class="row g-3">
                 <!-- COLONNE 1 : RÔLES & PERMISSIONS -->
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <div class="demo-card-box">
-                        <h6><i class="fa-solid fa-user-shield"></i> Changer de Rôle</h6>
+                        <h6><i class="fa-solid fa-user-shield"></i> Choisissez votre Profil</h6>
                         <p class="text-secondary small mb-3">
-                            Basculez instantanément pour tester la granularité des autorisations :
+                            Appuyez sur le bouton de votre choix selon le rôle que vous souhaitez tester :
                         </p>
                         
                         <div class="d-grid gap-2">
-                            <a href="/demo_controller.php?action=login_grand_admin&redirect=<?= urlencode($current_page) ?>" class="demo-btn-action demo-btn-admin">
-                                👑 <strong>Grand Admin</strong> (Alicia)
-                            </a>
-                            <small class="text-secondary" style="font-size: 11px;">Accès total : Dashboard, Personnel, Portail</small>
+                            <!-- PROFIL ÉLÈVE -->
+                            <div class="p-2 rounded bg-black bg-opacity-25 border border-success border-opacity-25">
+                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                    <span class="text-success fw-bold small">1. Vous voulez être un Élève ?</span>
+                                </div>
+                                <p class="text-secondary mb-2" style="font-size: 11px;">
+                                    Générez votre badge avec QR code officiel ou simulez le passage de votre moto au portail.
+                                </p>
+                                <a href="/register.php" class="demo-btn-action w-100 justify-content-center" style="background:#16a34a; color:#fff!important;">
+                                    🎓 <strong>Appuyez ici : Devenir Élève</strong>
+                                </a>
+                            </div>
 
-                            <a href="/demo_controller.php?action=login_sous_admin&redirect=/index.php" class="demo-btn-action demo-btn-gardien mt-2">
-                                🛡️ <strong>Gardien</strong> (Tovo)
-                            </a>
-                            <small class="text-secondary" style="font-size: 11px;">Accès restreint au Portail de Scan uniquement</small>
+                            <!-- PROFIL GARDIEN -->
+                            <div class="p-2 rounded bg-black bg-opacity-25 border border-primary border-opacity-25 mt-1">
+                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                    <span class="text-primary fw-bold small">2. Vous voulez être Gardien ?</span>
+                                </div>
+                                <p class="text-secondary mb-2" style="font-size: 11px;">
+                                    Accédez au terminal du portail de sécurité avec le scanner QR et la validation en temps réel.
+                                </p>
+                                <a href="/demo_controller.php?action=login_sous_admin&redirect=/index.php" class="demo-btn-action demo-btn-gardien w-100 justify-content-center">
+                                    🛡️ <strong>Appuyez ici : Devenir Gardien</strong>
+                                </a>
+                            </div>
 
-                            <a href="/demo_controller.php?action=logout&redirect=<?= urlencode($current_page) ?>" class="demo-btn-action demo-btn-visiteur mt-2">
-                                👤 <strong>Mode Visiteur</strong>
-                            </a>
-                            <small class="text-secondary" style="font-size: 11px;">Page d'accueil publique & demande de badge</small>
+                            <!-- PROFIL GRAND ADMIN -->
+                            <div class="p-2 rounded bg-black bg-opacity-25 border border-warning border-opacity-25 mt-1">
+                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                    <span class="text-warning fw-bold small">3. Vous voulez être Grand Admin ?</span>
+                                </div>
+                                <p class="text-secondary mb-2" style="font-size: 11px;">
+                                    Supervisez le Tableau de bord (KPIs, Donut Chart.js, flux DataTables) et la gestion du personnel.
+                                </p>
+                                <a href="/demo_controller.php?action=login_grand_admin&redirect=/dashboard.php" class="demo-btn-action demo-btn-admin w-100 justify-content-center">
+                                    👑 <strong>Appuyez ici : Devenir Grand Admin</strong>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -382,12 +406,15 @@ body {
 
             <!-- MILIEU : BOUTONS DE CONNEXION RAPIDE 1-CLIC -->
             <div class="d-flex align-items-center gap-2 flex-wrap">
-                <span class="text-secondary small d-none d-lg-inline">Bascule rapide :</span>
-                <a href="/demo_controller.php?action=login_grand_admin&redirect=<?= urlencode($current_page) ?>" class="demo-btn-action demo-btn-admin" title="Se connecter en Grand Admin en 1 clic">
-                    👑 Grand Admin
+                <span class="text-secondary small d-none d-lg-inline">Profil à tester :</span>
+                <a href="/register.php" class="demo-btn-action" style="background:#16a34a; color:#fff!important;" title="Tester le parcours Élève (formulaire et QR code)">
+                    🎓 Élève
                 </a>
-                <a href="/demo_controller.php?action=login_sous_admin&redirect=/index.php" class="demo-btn-action demo-btn-gardien" title="Se connecter en Gardien en 1 clic">
+                <a href="/demo_controller.php?action=login_sous_admin&redirect=/index.php" class="demo-btn-action demo-btn-gardien" title="Tester le parcours Gardien au portail (1 clic)">
                     🛡️ Gardien
+                </a>
+                <a href="/demo_controller.php?action=login_grand_admin&redirect=/dashboard.php" class="demo-btn-action demo-btn-admin" title="Tester le parcours Grand Admin (1 clic)">
+                    👑 Grand Admin
                 </a>
                 <?php if ($current_role !== 'visiteur') { ?>
                     <a href="/demo_controller.php?action=logout&redirect=<?= urlencode($current_page) ?>" class="demo-btn-action demo-btn-visiteur" title="Déconnexion (Mode Visiteur)">

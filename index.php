@@ -346,6 +346,78 @@ include "layout/header.php";
         </div>            
     </div> 
 
+    <!-- ARDOISE DU RECRUTEUR / GUIDE DE TEST INTERACTIF -->
+    <div class="py-5 bg-light border-top border-bottom shadow-sm">
+        <div class="container">
+            <div class="text-center mb-5">
+                <span class="badge bg-primary px-3 py-2 text-uppercase fw-bold mb-2 shadow-sm">📋 Ardoise du Recruteur</span>
+                <h2 class="display-6 fw-bold text-dark">Testez le projet en direct sans barrière</h2>
+                <p class="text-muted lead mx-auto" style="max-width: 750px;">
+                    Choisissez le profil que vous souhaitez tester. Chaque bouton vous plonge immédiatement dans le rôle correspondant, sans identifiant ni mot de passe :
+                </p>
+            </div>
+
+            <div class="row g-4">
+                <!-- CARTE 1 : ÉLÈVE -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="card h-100 shadow-sm border-0 rounded-4 p-4 text-center" style="background:#ffffff; border-top: 5px solid #16a34a !important;">
+                        <div class="mx-auto mb-3 d-flex align-items-center justify-content-center rounded-circle bg-success-subtle text-success" style="width: 75px; height: 75px; font-size: 34px;">
+                            🎓
+                        </div>
+                        <h4 class="fw-bold mb-2 text-dark">Vous voulez être Élève ?</h4>
+                        <p class="text-muted small mb-4">
+                            Simulez l'enregistrement d'un élève : remplissez le formulaire et générez automatiquement votre <strong>Badge officiel avec QR Code unique</strong> prêt à être scanné.
+                        </p>
+                        <div class="mt-auto d-grid gap-2">
+                            <a href="/register.php" class="btn btn-success fw-bold py-2 shadow-sm">
+                                👉 Appuyez ici : Devenir Élève
+                            </a>
+                            <small class="text-muted" style="font-size: 11px;">Formulaire + génération de QR code autonome</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CARTE 2 : GARDIEN (SOUS-ADMIN) -->
+                <div class="col-lg-4 col-md-6">
+                    <div class="card h-100 shadow-sm border-0 rounded-4 p-4 text-center" style="background:#ffffff; border-top: 5px solid #2563eb !important;">
+                        <div class="mx-auto mb-3 d-flex align-items-center justify-content-center rounded-circle bg-primary-subtle text-primary" style="width: 75px; height: 75px; font-size: 34px;">
+                            🛡️
+                        </div>
+                        <h4 class="fw-bold mb-2 text-dark">Vous voulez être Gardien ?</h4>
+                        <p class="text-muted small mb-4">
+                            Passez au portail de sécurité : pilotez le <strong>Scanner QR caméra</strong>, testez la saisie rapide, l'alternance automatique Entrée/Sortie et le verrou anti-spam (3s).
+                        </p>
+                        <div class="mt-auto d-grid gap-2">
+                            <a href="/demo_controller.php?action=login_sous_admin&redirect=/index.php" class="btn btn-primary fw-bold py-2 shadow-sm">
+                                👉 Appuyez ici : Devenir Gardien
+                            </a>
+                            <small class="text-muted" style="font-size: 11px;">Connexion 1-clic immédiate · Contrôle du Portail</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CARTE 3 : GRAND ADMIN -->
+                <div class="col-lg-4 col-md-6 mx-auto">
+                    <div class="card h-100 shadow-sm border-0 rounded-4 p-4 text-center" style="background:#ffffff; border-top: 5px solid #d97706 !important;">
+                        <div class="mx-auto mb-3 d-flex align-items-center justify-content-center rounded-circle bg-warning-subtle text-warning" style="width: 75px; height: 75px; font-size: 34px;">
+                            👑
+                        </div>
+                        <h4 class="fw-bold mb-2 text-dark">Vous voulez être Grand Admin ?</h4>
+                        <p class="text-muted small mb-4">
+                            Accédez à la supervision complète : <strong>Tableau de Bord interactif</strong> (KPIs en temps réel, Chart.js Donut, DataTables des passages) et <strong>Gestion du Personnel</strong>.
+                        </p>
+                        <div class="mt-auto d-grid gap-2">
+                            <a href="/demo_controller.php?action=login_grand_admin&redirect=/dashboard.php" class="btn btn-warning text-dark fw-bold py-2 shadow-sm">
+                                👉 Appuyez ici : Devenir Grand Admin
+                            </a>
+                            <small class="text-muted" style="font-size: 11px;">Connexion 1-clic immédiate · Dashboard & Administration</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             const texte1 = "Une Entrée Et Une Sortie";
