@@ -1,7 +1,10 @@
 FROM php:8.2-cli
 
-# Installer les extensions PHP requises
-RUN docker-php-ext-install mysqli pdo pdo_mysql
+# Installer libpng et l'extension PHP GD pour la génération des QR codes
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libpng-dev \
+    && docker-php-ext-install gd mysqli pdo pdo_mysql \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 COPY . /app/

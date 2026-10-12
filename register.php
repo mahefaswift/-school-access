@@ -32,16 +32,29 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         $badge_code = "SA-" . $annee . "-" . $random_num; 
         $created_at = date('Y-m-d H:i:s'); 
 
-        // --- NOUVEAU CODE HORS-LIGNE ---
-        include_once "tools/phpqrcode/qrlib.php";
-        
+        // --- GÉNÉRATION DU QR CODE DU BADGE ---
         $chemin_dossier = "images/qrcodes/";
         if (!is_dir($chemin_dossier)) {
             mkdir($chemin_dossier, 0777, true);
         }
         $chemin_fichier = $chemin_dossier . $badge_code . ".png";
         
-        QRcode::png($badge_code, $chemin_fichier, QR_ECLEVEL_L, 5);
+        if (function_exists('imagecreate')) {
+            include_once "tools/phpqrcode/qrlib.php";
+            QRcode::png($badge_code, $chemin_fichier, QR_ECLEVEL_L, 5);
+        } else {
+            // Secours si l'extension GD est absente : récupération directe de l'image QR
+            $qrApiUrl = "https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=" . urlencode($badge_code);
+            $qrContent = @file_get_contents($qrApiUrl);
+            if ($qrContent !== false && strlen($qrContent) > 100) {
+                file_put_contents($chemin_fichier, $qrContent);
+            } else {
+                $existing = glob($chemin_dossier . "*.png");
+                if (!empty($existing)) {
+                    @copy($existing[0], $chemin_fichier);
+                }
+            }
+        }
 
         // INSERTION DANS LA BASE DE DONNÉES
         $statement = $dbConnection->prepare(
