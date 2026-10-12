@@ -18,33 +18,34 @@ elif [ -n "$MYSQL_URL" ] || [ -n "$DATABASE_URL" ]; then
 else
     echo "[Render] Mode MariaDB interne actif (127.0.0.1)..."
 
-    # Création des répertoires requis
-    mkdir -p /var/run/mysqld /var/lib/mysql
-    chown -R mysql:mysql /var/run/mysqld /var/lib/mysql
+    # Création et permissions des répertoires requis
+    mkdir -p /var/run/mysqld /var/lib/mysql /var/log/mysql
+    chown -R mysql:mysql /var/run/mysqld /var/lib/mysql /var/log/mysql
+    chmod 777 /var/run/mysqld
 
-    # Initialisation du datadir si vide
+    # Initialisation du système de fichiers si nécessaire
     if [ ! -d "/var/lib/mysql/mysql" ]; then
         echo "[Render] Initialisation du système de fichiers MariaDB..."
-        mariadb-install-db --user=mysql --datadir=/var/lib/mysql --skip-test-db >/dev/null 2>&1 || mysql_install_db --user=mysql --datadir=/var/lib/mysql >/dev/null 2>&1 || true
+        mariadb-install-db --user=mysql --datadir=/var/lib/mysql --skip-test-db >/dev/null 2>&1 || mysql_install_db --user=mysql --datadir=/var/lib/mysql --skip-test-db >/dev/null 2>&1 || true
     fi
 
-    # Démarrage de MariaDB en arrière-plan avec mémoire optimisée pour Render (512 Mo max)
+    # Lancement direct du démon MariaDB en arrière-plan (ultra-léger : 32 Mo de buffer)
     echo "[Render] Démarrage du démon MariaDB..."
-    if command -v mariadbd-safe >/dev/null 2>&1; then
-        mariadbd-safe --datadir=/var/lib/mysql --user=mysql --innodb-buffer-pool-size=32M --max-connections=25 &
-    elif command -v mysqld_safe >/dev/null 2>&1; then
-        mysqld_safe --datadir=/var/lib/mysql --user=mysql --innodb-buffer-pool-size=32M --max-connections=25 &
-    elif command -v mariadbd >/dev/null 2>&1; then
-        mariadbd --datadir=/var/lib/mysql --user=mysql --innodb-buffer-pool-size=32M --max-connections=25 &
-    else
-        service mariadb start || true
-    fi
+    mariadbd --user=mysql \
+        --datadir=/var/lib/mysql \
+        --socket=/var/run/mysqld/mysqld.sock \
+        --port=3306 \
+        --bind-address=0.0.0.0 \
+        --innodb-buffer-pool-size=32M \
+        --max-connections=30 \
+        --skip-innodb-doublewrite \
+        --console >/dev/null 2>&1 &
 
     # Attente que MariaDB réponde
     echo "[Render] Attente de la disponibilité de MySQL..."
     READY=0
     for i in $(seq 1 30); do
-        if mysqladmin ping --silent 2>/dev/null; then
+        if mariadb-admin ping --socket=/var/run/mysqld/mysqld.sock --silent 2>/dev/null || mysqladmin ping --silent 2>/dev/null; then
             READY=1
             echo "[Render] MariaDB est prêt et opérationnel !"
             break
@@ -54,22 +55,22 @@ else
 
     if [ "$READY" -eq 1 ]; then
         # Configuration des permissions pour 127.0.0.1 et localhost
-        mariadb -e "CREATE USER IF NOT EXISTS 'root'@'127.0.0.1' IDENTIFIED BY '';" 2>/dev/null || true
-        mariadb -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'127.0.0.1' WITH GRANT OPTION;" 2>/dev/null || true
-        mariadb -e "GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' WITH GRANT OPTION;" 2>/dev/null || true
-        mariadb -e "FLUSH PRIVILEGES;" 2>/dev/null || true
-
-        # Création de la base
-        mariadb -e "CREATE DATABASE IF NOT EXISTS school_access_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;" 2>/dev/null || true
+        mariadb -u root --socket=/var/run/mysqld/mysqld.sock -e "
+            CREATE USER IF NOT EXISTS 'root'@'127.0.0.1' IDENTIFIED BY '';
+            GRANT ALL PRIVILEGES ON *.* TO 'root'@'127.0.0.1' WITH GRANT OPTION;
+            GRANT ALL PRIVILEGES ON *.* TO 'root'@'localhost' WITH GRANT OPTION;
+            FLUSH PRIVILEGES;
+            CREATE DATABASE IF NOT EXISTS school_access_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+        " 2>/dev/null || true
 
         # Importation des tables et données
-        TABLE_COUNT=$(mariadb -N -s -e "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = 'school_access_db';" 2>/dev/null || echo "0")
+        TABLE_COUNT=$(mariadb -u root --socket=/var/run/mysqld/mysqld.sock -N -s -e "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = 'school_access_db';" 2>/dev/null || echo "0")
         if [ "$TABLE_COUNT" = "0" ] || [ -z "$TABLE_COUNT" ]; then
             echo "[Render] Importation initiale des tables dans school_access_db..."
             if [ -f "/app/school_access_db.sql" ]; then
-                mariadb school_access_db < /app/school_access_db.sql || true
+                mariadb -u root --socket=/var/run/mysqld/mysqld.sock school_access_db < /app/school_access_db.sql || true
             elif [ -f "/app/school_access_db (1).sql" ]; then
-                mariadb school_access_db < "/app/school_access_db (1).sql" || true
+                mariadb -u root --socket=/var/run/mysqld/mysqld.sock school_access_db < "/app/school_access_db (1).sql" || true
             fi
             echo "[Render] Données initiales importées avec succès !"
         else

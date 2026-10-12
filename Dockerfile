@@ -12,6 +12,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # Installer les extensions PHP MySQLi et PDO
 RUN docker-php-ext-install mysqli pdo pdo_mysql
 
+# Préparer les répertoires système requis pour MariaDB
+RUN mkdir -p /var/run/mysqld /var/lib/mysql /var/log/mysql \
+    && chown -R mysql:mysql /var/run/mysqld /var/lib/mysql /var/log/mysql \
+    && chmod 777 /var/run/mysqld
+
 WORKDIR /app
 COPY . /app/
 
