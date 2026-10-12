@@ -1,26 +1,13 @@
 FROM php:8.2-cli
 
-ENV DEBIAN_FRONTEND=noninteractive
-
-# Installer MariaDB et les dépendances nécessaires sans bloquer debconf
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    mariadb-server \
-    mariadb-client \
-    procps \
-    && rm -rf /var/lib/apt/lists/*
-
-# Installer les extensions PHP MySQLi et PDO
+# Installer les extensions PHP requises
 RUN docker-php-ext-install mysqli pdo pdo_mysql
-
-# Préparer les répertoires système requis pour MariaDB
-RUN mkdir -p /var/run/mysqld /var/lib/mysql /var/log/mysql \
-    && chown -R mysql:mysql /var/run/mysqld /var/lib/mysql /var/log/mysql \
-    && chmod 777 /var/run/mysqld
 
 WORKDIR /app
 COPY . /app/
 
-RUN chmod +x /app/entrypoint.sh
+# Préparation du répertoire pour les QR codes générés
+RUN mkdir -p /app/images/qrcodes && chmod -R 777 /app/images/qrcodes
 
-# Point d'entrée pour Render / Cloud
-CMD ["/app/entrypoint.sh"]
+# Render injecte $PORT dynamiquement (par défaut 10000)
+CMD ["sh", "-c", "php -S 0.0.0.0:${PORT:-10000}"]
