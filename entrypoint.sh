@@ -4,8 +4,8 @@ set -e
 # ==============================================================================
 # ENTRYPOINT POUR RENDER / CLOUD DOCKER
 # Gère automatiquement :
-# 1. Base externe si variables présentes (DB_SERVER, MYSQLHOST, MYSQL_URL...)
-# 2. OU Démarrage autonome d'une instance MariaDB interne pré-remplie
+# 1. Base externe si variables présentes (DB_SERVER distant, MYSQLHOST, MYSQL_URL...)
+# 2. OU Démarrage autonome d'une instance MariaDB interne allégée
 # 3. Démarrage du serveur Web PHP sur le port dynamique injecté par Render ($PORT)
 # ==============================================================================
 
@@ -25,15 +25,19 @@ else
     # Initialisation du datadir si vide
     if [ ! -d "/var/lib/mysql/mysql" ]; then
         echo "[Render] Initialisation du système de fichiers MariaDB..."
-        mariadb-install-db --user=mysql --datadir=/var/lib/mysql >/dev/null 2>&1 || mysql_install_db --user=mysql --datadir=/var/lib/mysql >/dev/null 2>&1 || true
+        mariadb-install-db --user=mysql --datadir=/var/lib/mysql --skip-test-db >/dev/null 2>&1 || mysql_install_db --user=mysql --datadir=/var/lib/mysql >/dev/null 2>&1 || true
     fi
 
-    # Démarrage de MariaDB en arrière-plan
-    echo "[Render] Démarrage du service MariaDB..."
-    if [ -x "/etc/init.d/mariadb" ]; then
-        /etc/init.d/mariadb start || service mariadb start || /usr/bin/mysqld_safe --datadir='/var/lib/mysql' --user=mysql &
+    # Démarrage de MariaDB en arrière-plan avec mémoire optimisée pour Render (512 Mo max)
+    echo "[Render] Démarrage du démon MariaDB..."
+    if command -v mariadbd-safe >/dev/null 2>&1; then
+        mariadbd-safe --datadir=/var/lib/mysql --user=mysql --innodb-buffer-pool-size=32M --max-connections=25 &
+    elif command -v mysqld_safe >/dev/null 2>&1; then
+        mysqld_safe --datadir=/var/lib/mysql --user=mysql --innodb-buffer-pool-size=32M --max-connections=25 &
+    elif command -v mariadbd >/dev/null 2>&1; then
+        mariadbd --datadir=/var/lib/mysql --user=mysql --innodb-buffer-pool-size=32M --max-connections=25 &
     else
-        /usr/bin/mysqld_safe --datadir='/var/lib/mysql' --user=mysql &
+        service mariadb start || true
     fi
 
     # Attente que MariaDB réponde

@@ -1,12 +1,15 @@
 FROM php:8.2-cli
 
-# Installer MariaDB et ses dépendances
-RUN apt-get update && apt-get install -y \
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Installer MariaDB et les dépendances nécessaires sans bloquer debconf
+RUN apt-get update && apt-get install -y --no-install-recommends \
     mariadb-server \
     mariadb-client \
+    procps \
     && rm -rf /var/lib/apt/lists/*
 
-# Installer mysqli et PDO MySQL pour PHP
+# Installer les extensions PHP MySQLi et PDO
 RUN docker-php-ext-install mysqli pdo pdo_mysql
 
 WORKDIR /app
